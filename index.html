@@ -14,14 +14,34 @@
 <div id="lucky" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 20px;"></div>
 </body>
 <script>
-options = {
+var options = {
   container: 'lucky',
   title: "Pywss",
   lang: 'zh',
   allowUpdate: true,
   loadUrl: "/luckysheet/api/loadUrl",
   updateUrl: `ws://${document.location.host}/luckysheet/api/updateUrl`,
+  functionButton: '<button id="" class="btn btn-primary btn-danger" style=" padding:3px 6px; font-size: 12px; margin-right: 85px;" onclick="testlog()">日志</button>',
 }
-window.luckysheet.create(options);
+$(function () {luckysheet.create(options)})
+ 
+function testlog() {console.log(luckysheet.getAllSheets()[0]);
+  debugger
+  $.ajax({
+       url: 'http://127.0.0.1:5001/test',
+       method: 'POST',
+       data: {exportdata: JSON.stringify(luckysheet.getAllSheets()[0])},
+       });
+  debugger
+}
+ 
+$(window).bind('unload', function() {
+   $.ajax({
+       url: 'http://127.0.0.1:5001/test',
+       method: 'POST',
+       data: {exportdata: JSON.stringify(luckysheet.getAllSheets()[0])},
+       });
+})
+ 
 </script>
 </html>
